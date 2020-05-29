@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">TicketHolder</string>
+
+    <string name="ticket_number">№%1$d</string>
+    <string name="ticket_usages">Использований: %1$d</string>
+
+    <string name="button_search">Найти</string>
+    <string name="button_reset">Сбросить</string>
+
+    <string name="dialog_add_ticket">Билет не найден</string>
+    <string name="dialog_really_add_ticket">Вы хотите добавить данный билет?\n\n%1$s</string>
+
+    <string name="dialog_found_ticket">Билет найден</string>
+    <string name="dialog_found_ticket_detailed">Найден билет №%1$d\n\n%2$s</string>
+
+    <string name="dialog_delete_ticket">Удаление билета</string>
+    <string name="dialog_really_delete_ticket">Вы действительно хотите удалить билет №%1$d?\n\n%2$s</string>
+
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="ok">ОК</string>
+
+    <string name="description_delete_ticket">Удаление билета из списка</string>
+
+    <string name="day_night_mode">Смена режима на дневной или ночной</string>
+</resources>
