@@ -37,13 +37,9 @@ android:
     - build-tools-$ANDROID_BUILD_TOOLS
     - android-$ANDROID_API
     - android-$EMULATOR_API
-    - extra-android-support
-    - extra-google-m2repository
-    - extra-android-m2repository
     - sys-img-armeabi-v7a-android-$EMULATOR_API
 
   licenses:
-    - android-sdk-preview-license-.+
     - android-sdk-license-.+
     - google-gdk-license-.+
 
@@ -51,17 +47,25 @@ before_install:
   - chmod +x gradlew
 
 before_script:
-  - echo no | android create avd --force -n test -t android-$EMULATOR_API --abi $ABI
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
+  - |
+    if [ "$TRAVIS_PULL_REQUEST" = "false" && "$TRAVIS_BRANCH" == "master" ]; then
+      echo no | android create avd --force -n test -t android-$EMULATOR_API --abi $ABI
+      emulator -avd test -no-skin -no-audio -no-window &
+      android-wait-for-emulator
+      adb shell input keyevent 82 &
+    fi
 
 script:
-  - ./gradlew clean assemble --stacktrace
-  - ./gradlew test --stacktrace
-  - ./gradlew connectedAndroidTest --stacktrace
+  - ./gradlew clean assembleDebug --stacktrace
+  - ./gradlew testDebug --stacktrace
+  - |
+    if [ "$TRAVIS_PULL_REQUEST" = "false" && "$TRAVIS_BRANCH" == "master" ]; then
+      ./gradlew connectedDebugAndroidTest --stacktrace
+    fi
+
 
 before_deploy:
+  - ./gradlew assembleRelease --stacktrace
   - mv $APK_DIRECTORY/app-release.apk $APK_DIRECTORY/$APP_NAME.apk
 
 deploy:
