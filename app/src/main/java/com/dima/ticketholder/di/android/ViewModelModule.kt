@@ -2,6 +2,7 @@ package com.dima.ticketholder.di.android
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.dima.ticketholder.ui.MainActivityViewModel
 import com.dima.ticketholder.ui.fragments.MainViewModel
 import com.dima.ticketholder.utils.ViewModelProviderFactory
 import dagger.Binds
@@ -24,6 +25,11 @@ abstract class ViewModelModule {
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelProviderFactory):
             ViewModelProvider.Factory
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainActivityViewModel::class)
+    abstract fun bindMainActivityViewModel(viewModel: MainActivityViewModel): ViewModel
 
     @Binds
     @IntoMap

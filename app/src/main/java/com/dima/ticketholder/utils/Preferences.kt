@@ -3,11 +3,17 @@ package com.dima.ticketholder.utils
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 
+const val APP_PREFERENCES = "app_preferences"
+
 const val DAY_NIGHT_MODE_KEY = "mode"
 
 fun setDayNightModeFromPreferences(preferences: SharedPreferences) {
-    AppCompatDelegate.setDefaultNightMode(preferences.getInt(DAY_NIGHT_MODE_KEY,
-        AppCompatDelegate.MODE_NIGHT_NO))
+    AppCompatDelegate.setDefaultNightMode(
+        preferences.getInt(
+            DAY_NIGHT_MODE_KEY,
+            AppCompatDelegate.MODE_NIGHT_NO
+        )
+    )
 }
 
 fun changeDayNightMode(preferences: SharedPreferences) {
