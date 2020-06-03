@@ -82,27 +82,22 @@ data class Ticket(
         var part = thisPart
         val sameSize = thisWidth == anotherWidth && thisHeight == anotherHeight
         val sameSizeAfterRotate = thisWidth == anotherHeight && thisHeight == anotherWidth
+        var result = false
 
-        fun do_compare(part: Array<BooleanArray>) : Boolean  {
-
+        fun doCompare(part: Array<BooleanArray>) : Boolean  {
             val h = horizontalReflection(part)
             val v = verticalReflection(part)
             val hv = verticalReflection(h)
-
             return part.contentDeepEquals(anotherPart)
                     || h.contentDeepEquals(anotherPart)
                     || v.contentDeepEquals(anotherPart)
                     || hv.contentDeepEquals(anotherPart)
         }
-        var result = false
-
         if (sameSize || sameSizeAfterRotate) {
-
-            result = do_compare(part)
-
+            result = doCompare(part)
             if (!result && sameSizeAfterRotate) {
                 part = rotate(part)
-                result = do_compare(part)
+                result = doCompare(part)
             }
         }
         return result
