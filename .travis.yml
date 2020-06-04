@@ -2,7 +2,7 @@ os: linux
 dist: trusty
 
 language: android
-jdk: openjdk8
+jdk: oraclejdk8
 
 branches:
   only:

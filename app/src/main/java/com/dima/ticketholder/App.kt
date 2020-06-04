@@ -10,7 +10,7 @@ import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
 
-class App : Application(), HasAndroidInjector {
+open class App : Application(), HasAndroidInjector {
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
@@ -20,12 +20,15 @@ class App : Application(), HasAndroidInjector {
 
     override fun onCreate() {
         super.onCreate()
+        initDagger()
+        setDayNightModeFromPreferences(preferences)
+    }
+
+    open fun initDagger() {
         DaggerAppComponent.builder()
             .create(this)
             .build()
             .inject(this)
-
-        setDayNightModeFromPreferences(preferences)
     }
 
     override fun androidInjector(): AndroidInjector<Any> = androidInjector

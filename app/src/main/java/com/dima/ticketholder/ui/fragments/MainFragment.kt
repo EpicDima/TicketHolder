@@ -73,13 +73,8 @@ class MainFragment : Fragment(), TicketListAdapter.OnItemClickListener {
     }
 
     private fun setListeners() {
-        binding.searchButton.setOnClickListener {
-            viewModel.search()
-        }
-
-        binding.resetButton.setOnClickListener {
-            viewModel.reset()
-        }
+        binding.searchButton.setOnClickListener { viewModel.search() }
+        binding.resetButton.setOnClickListener { viewModel.reset() }
     }
 
     private fun setObservers() {
@@ -89,24 +84,28 @@ class MainFragment : Fragment(), TicketListAdapter.OnItemClickListener {
 
         viewModel.createTicketEvent.observe(viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let { ticket ->
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(getString(R.string.dialog_add_ticket))
-                    .setMessage(getString(R.string.dialog_really_add_ticket, ticket.markToString()))
-                    .setPositiveButton(getString(R.string.yes)) { _, _ -> viewModel.insert(ticket) }
-                    .setNegativeButton(getString(R.string.no)) { dialog, _ ->  dialog.cancel() }
-                    .show()
+                createDialog {
+                    setTitle(getString(R.string.dialog_add_ticket))
+                    setMessage(getString(R.string.dialog_really_add_ticket, ticket.markToString()))
+                    setPositiveButton(getString(R.string.yes)) { _, _ -> viewModel.insert(ticket) }
+                    setNegativeButton(getString(R.string.no)) { dialog, _ -> dialog.cancel() }
+                }
             }
         })
 
         viewModel.foundTicketEvent.observe(viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let { ticket ->
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(getString(R.string.dialog_found_ticket))
-                    .setMessage(getString(R.string.dialog_found_ticket_detailed, ticket.number, ticket.markToString()))
-                    .setPositiveButton(getString(R.string.ok)) { dialog, _ -> dialog.cancel() }
-                    .setOnCancelListener { viewModel.reset() }
-                    .create()
-                    .show()
+                createDialog {
+                    setTitle(getString(R.string.dialog_found_ticket))
+                    setMessage(
+                        getString(
+                            R.string.dialog_found_ticket_detailed,
+                            ticket.number, ticket.markToString()
+                        )
+                    )
+                    setPositiveButton(getString(R.string.ok)) { dialog, _ -> dialog.cancel() }
+                    setOnCancelListener { viewModel.reset() }
+                }
             }
         })
 
@@ -121,12 +120,20 @@ class MainFragment : Fragment(), TicketListAdapter.OnItemClickListener {
     }
 
     override fun onItemClicked(ticket: Ticket) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.dialog_delete_ticket))
-            .setMessage(getString(R.string.dialog_really_delete_ticket, ticket.number, ticket.markToString()))
-            .setPositiveButton(getString(R.string.yes)) { _, _ -> viewModel.delete(ticket) }
-            .setNegativeButton(getString(R.string.no)) { dialog, _ ->  dialog.cancel() }
-            .create()
-            .show()
+        createDialog {
+            setTitle(getString(R.string.dialog_delete_ticket))
+            setMessage(
+                getString(
+                    R.string.dialog_really_delete_ticket,
+                    ticket.number, ticket.markToString()
+                )
+            )
+            setPositiveButton(getString(R.string.yes)) { _, _ -> viewModel.delete(ticket) }
+            setNegativeButton(getString(R.string.no)) { dialog, _ -> dialog.cancel() }
+        }
+    }
+
+    private fun createDialog(configuration: MaterialAlertDialogBuilder.() -> Unit) {
+        MaterialAlertDialogBuilder(requireContext()).apply(configuration).create().show()
     }
 }

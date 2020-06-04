@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.day_night_item) {
             viewModel.changeDayNightMode()
-            recreate()
         }
         return super.onOptionsItemSelected(item)
     }
