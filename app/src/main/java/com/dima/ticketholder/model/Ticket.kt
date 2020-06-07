@@ -1,4 +1,5 @@
 package com.dima.ticketholder.model
+package com.dima.ticketholder.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -75,6 +76,16 @@ data class Ticket(
             .joinToString(" ")
     }.joinToString("\n")
 
+    fun doCompare(part: Array<BooleanArray>, anotherPart: Array<BooleanArray>): Boolean  {
+        val h = horizontalReflection(part)
+        val v = verticalReflection(part)
+        val hv = verticalReflection(h)
+        return part.contentDeepEquals(anotherPart)
+                || h.contentDeepEquals(anotherPart)
+                || v.contentDeepEquals(anotherPart)
+                || hv.contentDeepEquals(anotherPart)
+    }
+
     fun compare(another: Ticket): Boolean {
         val (anotherPart, anotherWidth, anotherHeight) = another.nonEmptyPartWithSize
         val (thisPart, thisWidth, thisHeight) = nonEmptyPartWithSize
@@ -82,21 +93,16 @@ data class Ticket(
         var part = thisPart
         val sameSize = thisWidth == anotherWidth && thisHeight == anotherHeight
         val sameSizeAfterRotate = thisWidth == anotherHeight && thisHeight == anotherWidth
-
+        var result = false
+        
         if (sameSize || sameSizeAfterRotate) {
-            if (sameSizeAfterRotate) {
+            result = doCompare(part, anotherPart)
+            if (!result && sameSizeAfterRotate) {
                 part = rotate(part)
+                result = doCompare(part, anotherPart)
             }
-            val h = horizontalReflection(part)
-            val v = verticalReflection(part)
-            val hv = verticalReflection(h)
-
-            return part.contentDeepEquals(anotherPart)
-                    || h.contentDeepEquals(anotherPart)
-                    || v.contentDeepEquals(anotherPart)
-                    || hv.contentDeepEquals(anotherPart)
         }
-        return false
+        return result
     }
 
     override fun equals(other: Any?): Boolean {
