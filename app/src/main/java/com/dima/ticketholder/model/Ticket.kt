@@ -1,5 +1,4 @@
 package com.dima.ticketholder.model
-package com.dima.ticketholder.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
