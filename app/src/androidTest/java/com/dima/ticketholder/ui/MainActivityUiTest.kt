@@ -8,14 +8,14 @@ import androidx.test.filters.LargeTest
 import com.dima.ticketholder.R
 import com.dima.ticketholder.utils.click
 import com.dima.ticketholder.utils.getViewById
-import org.junit.Assert.assertNotEquals
+import io.kotest.matchers.shouldNotBe
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 
-@RunWith(AndroidJUnit4::class)
 @LargeTest
+@RunWith(AndroidJUnit4::class)
 class MainActivityUiTest {
 
     @get:Rule
@@ -29,7 +29,7 @@ class MainActivityUiTest {
         clicks.forEach { clickCount ->
             repeat(clickCount) {
                 R.id.day_night_item.getViewById().click()
-                assertNotEquals(currentMode, getCurrentMode())
+                getCurrentMode() shouldNotBe currentMode
                 currentMode = getCurrentMode()
             }
             rotateScreen()

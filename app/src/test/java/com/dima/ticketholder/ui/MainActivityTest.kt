@@ -19,7 +19,7 @@ import org.robolectric.annotation.Config
 import javax.inject.Inject
 
 @LargeTest
-@Config(sdk = [Build.VERSION_CODES.P])
+@Config(sdk = [Build.VERSION_CODES.Q])
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest : TestHelper {
 
